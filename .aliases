@@ -1,3 +1,26 @@
+function versions() {
+  commands=("poetry" "python" "node" "npm" "pip" "ruby" "java" "gh")
+  
+  # Define color codes
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  NC='\033[0m' # No color
+
+  for cmd in "${commands[@]}"; do
+    if command -v $cmd &> /dev/null; then
+      version=$($cmd version 2>/dev/null)
+      if [ -z "$version" ]; then
+        version=$($cmd --version 2>/dev/null) # Fallback to --version if 'version' isn't supported
+      fi
+      echo -e "$cmd: ${GREEN}$version${NC}"
+    else
+      echo -e "$cmd: ${RED}not installed${NC}"
+    fi
+  done
+}
+
+
+
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
   colorflag="--color"
